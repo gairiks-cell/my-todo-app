@@ -30,6 +30,7 @@
       "react-app/jest"
     ]
   },
+  "test": "react-scripts test --passWithNoTests",
   "browserslist": {
     "production": [
       ">0.2%",

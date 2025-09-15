@@ -1,70 +1,17 @@
-name: Playwright E2E Tests
+name: Trigger Playwright E2E Tests
 
 on:
   push:
-    branches: [main]
-  pull_request:
+    branches: [main] # ✅ Or any branch you want to monitor
 
 jobs:
-  e2e-tests:
+  trigger-e2e-tests:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
 
     steps:
-      # Checkout this (tests) repo
-      - name: Checkout Playwright tests repo
-        uses: actions/checkout@v4
-
-      # Checkout the React app repo (my-todo-app)
-      - name: Checkout React app repo (my-todo-app)
-        uses: actions/checkout@v4
+      - name: Dispatch to assessment repo
+        uses: peter-evans/repository-dispatch@v2
         with:
-          repository: gairiks-cell/my-todo-app
-          path: my-todo-app
-          token: ${{ secrets.MY_CASES }}
-
-      # Set up Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      # Install app dependencies
-      - name: Install app dependencies
-        working-directory: my-todo-app
-        run: npm ci
-
-      # Start the React app in background and wait for it to be ready
-      - name: Start React app
-        working-directory: my-todo-app
-        run: |
-          npm start &
-          npx wait-on --timeout 60000 http://localhost:3000
-
-      # Verify React app is running
-      - name: Verify React app started
-        run: curl -I http://localhost:3000
-
-      # Install test dependencies (for playwright-assessment repo)
-      - name: Install test dependencies
-        run: npm ci
-
-      # Install Playwright browsers
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps
-
-      # Run Playwright tests
-      - name: Run Playwright tests
-        run: npx playwright test
-
-      # Debug: List contents of the report folder to verify it exists
-      - name: List report folder contents
-        run: ls -la playwright-report || echo "Report folder not found"
-
-      # Upload Playwright HTML report (using v4)
-      - name: Upload Playwright HTML report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report
+          token: ${{ secrets.DISPATCH_TOKEN }} # ✅ SAME PAT, added to this repo too
+          repository: gairiks-cell/playwright-assessment
+          event-type: trigger-playwright-tests

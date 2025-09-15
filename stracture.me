@@ -1,0 +1,28 @@
+To refactor your TodoMVC React + TypeScript app into an Atomic Design structure with centralized state management via React Context (using Context Provider and ContextHolder pattern), here is the updated project structure and code.
+
+1. Updated Atomic Project Structure
+
+src/
+├── atoms/
+│   ├── Button.tsx
+│   ├── Checkbox.tsx
+│   ├── Input.tsx
+├── molecules/
+│   ├── TodoItem.tsx
+│   ├── TodoInput.tsx
+│   ├── TodoFilter.tsx
+│   ├── TodoList.tsx
+├── organisms/
+│   ├── TodoApp.tsx
+├── context/
+│   ├── TodoContext.tsx
+├── hooks/
+│   ├── useTodos.ts
+├── types/
+│   ├── todo.ts
+├── styles/
+│   ├── main.scss
+├── App.tsx
+├── index.tsx
+
+

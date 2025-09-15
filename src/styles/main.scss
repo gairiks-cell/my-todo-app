@@ -1,0 +1,289 @@
+/* ===== Global ===== */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #f5f5f5;
+  color: #4d4d4d;
+}
+body {
+  min-height: 100vh;
+}
+
+/* ===== Layout / Organism ===== */
+.todo-app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px;
+
+  .todo-app__title {
+    font-size: 100px;
+    color: #999;
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: -5px;
+    margin: 0 0 26px 0;
+    user-select: none;
+    opacity: 0.46;
+    line-height: 1.1;
+    text-transform: lowercase;
+  }
+}
+.todo-main {
+  width: 520px;
+  background: #fff;
+  border-radius: 7px;
+  box-shadow: 0 6px 50px rgba(0, 0, 0, 0.09), 0 1.5px 4px rgba(0, 0, 0, 0.02);
+  margin-bottom: 25px;
+  overflow: hidden;
+}
+
+/* ===== Input Atom ===== */
+.input,
+.todo-input__field {
+  width: 100%;
+  font-size: 24px;
+  padding: 20px 16px 20px 62px;
+  border: none;
+  outline: none;
+  color: #333;
+  background: #fff;
+  font-family: inherit;
+
+  &::placeholder {
+    color: #e6e6e6;
+    font-style: italic;
+  }
+}
+.todo-input {
+  border-bottom: 1px solid #ededed;
+  background: #fff;
+  position: relative;
+  .todo-input__field {
+    border-radius: 0;
+    background: transparent;
+  }
+  .todo-input__button {
+    display: none;
+  }
+}
+
+/* ===== Checkbox Atom ===== */
+.checkbox,
+.toggle {
+  appearance: none;
+  width: 42px;
+  height: 42px;
+  margin: 0 28px 0 0;
+  border-radius: 50%;
+  border: 1.75px solid #ededed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  transition: border-color 0.21s;
+
+  &:checked {
+    border-color: #b1e2d0;
+    background: none;
+  }
+  &:checked:after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    width: 26px;
+    height: 26px;
+    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%2306b6a5' stroke-width='3' viewBox='2 2 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='5,13 10,18 19,7'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    display: block;
+  }
+}
+
+/* ===== Todo List/Molecule ===== */
+.todo-list {
+  margin: 0;
+  padding: 0;
+  &__empty {
+    color: #b3b3b3;
+    padding: 20px;
+    text-align: center;
+    margin: 0;
+    font-size: 22px;
+  }
+}
+
+li[data-testid="todo-item"] {
+  position: relative;
+  font-size: 24px;
+  border-bottom: 1.4px solid #ededed;
+  background: #fff;
+
+  &.completed .view label {
+    text-decoration: line-through;
+    color: #bdbdbd;
+    opacity: 0.53;
+  }
+  &.completed .toggle {
+    border-color: #b1e2d0;
+    background-color: #fff;
+  }
+  &:last-child {
+    border-bottom: none;
+  }
+
+  .view {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    padding: 1.7px 5px 1.7px 2px;
+    position: relative;
+
+    .toggle {
+      margin-left: 4px;
+      margin-right: 18px;
+    }
+    label {
+      flex: 1;
+      cursor: pointer;
+      word-break: break-word;
+      padding: 12px 2px 12px 0;
+      user-select: text;
+      font-size: 1em;
+      line-height: 1.12;
+      transition: color 0.22s;
+    }
+    .destroy {
+      margin-left: 8px;
+      margin-right: 6px;
+      opacity: 0.31;
+      border: none;
+      background: none;
+      color: #cc4b4b;
+      font-size: 29px;
+      width: 43px;
+      height: 43px;
+      line-height: 0.9;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.18s;
+      position: relative;
+
+      &::after {
+        content: "×";
+        font-size: 1em;
+        font-weight: 100;
+        color: #cc4b4b;
+        position: absolute;
+        left: 53%;
+        top: 46%;
+        transform: translate(-50%, -55%);
+      }
+      &:hover,
+      &:focus {
+        opacity: 1;
+      }
+    }
+  }
+
+  .edit {
+    position: absolute;
+    top: 9px;
+    left: 56px;
+    right: 60px;
+    font-size: 25px;
+    padding: 10px 8px;
+    border: 1.1px solid #ddd;
+    border-radius: 4px;
+    outline: none;
+    background: #fff;
+    color: #222;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* ===== Footer (Filter) ===== */
+.todo-footer {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 9px 14px 6px 18px;
+  background: none;
+  border-top: 1.35px solid #ededed;
+  font-size: 17px;
+  color: #989898;
+
+  span {
+    line-height: 1;
+  }
+
+  &__filters {
+    display: flex;
+    align-items: center;
+    margin: 0 12px;
+    gap: 8px;
+
+    .button {
+      font-size: 16px;
+      color: #868686;
+      padding: 2.5px 11px;
+      border-radius: 3px;
+      border: none;
+      outline: none;
+      background: none;
+      cursor: pointer;
+      transition: border 0.17s;
+      font-family: inherit;
+      font-weight: 500;
+
+      &.selected {
+        border: 1.7px solid #d9d9d9;
+        background: #f9f9f9;
+        color: #00695c;
+      }
+      &:hover {
+        border: 1.4px solid #b2dad2;
+        background: #f2faf8;
+        color: #06b6a5;
+      }
+    }
+  }
+
+  &__clear {
+    margin-left: auto;
+    color: #cf4545;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: 400;
+    padding: 1px 13px 0 13px;
+    font-size: 16px;
+    transition: color 0.19s;
+
+    &:hover {
+      text-decoration: underline;
+      color: #dd2222;
+    }
+  }
+}
+
+@media (max-width: 630px) {
+  .todo-main {
+    width: 97vw;
+    min-width: 0;
+  }
+}

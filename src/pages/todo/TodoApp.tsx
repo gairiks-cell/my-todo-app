@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { useTodoContext } from "../../context/TodoContext";
 import TodoInput from "./components/TodoInput";
 import TodoList from "./components/TodoList";

@@ -24,7 +24,7 @@ jobs:
   trigger:
     name: Trigger Playwright Test Case Runner
     runs-on: ubuntu-latest
-    needs: build # This ensures the next job runs after the build job completes
+    needs: build
 
     steps:
       - name: Trigger Playwright Test Case Runner

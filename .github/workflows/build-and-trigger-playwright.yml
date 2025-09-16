@@ -31,4 +31,4 @@ jobs:
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: gairiks-cell/playwright-assessment
-          event-type: Test-Case-Runner
+          event-type: TODO-App-Test-Runner

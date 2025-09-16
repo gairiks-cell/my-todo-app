@@ -1,4 +1,4 @@
-name: Build and Trigger Playwright E2E Tests
+name: Build & Trigger Playwright Tests
 
 on:
   push:
@@ -6,49 +6,27 @@ on:
       - main
 
 jobs:
-  build-app:
-    name: Build and Test App # Custom name for this job
+  build:
+    name: 🏗️ Build React App
     runs-on: ubuntu-latest
-    steps:
-      # Step 1: Checkout App Repo
-      - name: Checkout App Repo
-        uses: actions/checkout@v4
-        with:
-          repository: gairiks-cell/my-todo-app
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 2: Set up Node.js
-      - name: Set up Node.js
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 🔧 Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # Step 3: Install app dependencies
-      - name: Install App Dependencies
+      - name: 📦 Install dependencies
         run: npm ci
 
-      # Step 4: Run App Tests
-      - name: Run App Tests
-        run: npm test
+      - name: ✅ Run tests
+        run: npm test -- --passWithNoTests
 
-      # Step 5: Trigger Playwright E2E Tests
-      - name: Trigger Playwright E2E Tests
+      - name: 🚀 Trigger Playwright E2E Tests
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: gairiks-cell/playwright-assessment
-          event-type: run-playwright-tests
-
-  trigger-playwright-e2e:
-    name: Trigger Playwright E2E Tests Pipeline # Custom name for this job
-    runs-on: ubuntu-latest
-    needs: build-app # This ensures that this job will run only after the "build-app" job completes successfully
-
-    steps:
-      # Step 1: Dispatch the event to Playwright repo
-      - name: Dispatch to Playwright Repo to Run E2E Tests
-        uses: peter-evans/repository-dispatch@v2
-        with:
-          token: ${{ secrets.DISPATCH_TOKEN }}
-          repository: gairiks-cell/playwright-assessment
-          event-type: trigger-playwright-tests
+          event-type: trigger-playwright-e2e

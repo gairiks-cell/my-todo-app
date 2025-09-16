@@ -1,4 +1,4 @@
-name: Build & Trigger Playwright Tests
+name: Build & Execute Playwright Test Cases
 
 on:
   push:
@@ -24,9 +24,9 @@ jobs:
       - name: ✅ Run tests
         run: npm test -- --passWithNoTests
 
-      - name: 🚀 Trigger Playwright E2E Tests
+      - name: 🚀 Trigger Playwright Test Cases
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           repository: gairiks-cell/playwright-assessment
-          event-type: trigger-playwright-e2e
+          event-type: executing-playwright-test-cases # <-- Updated event name here

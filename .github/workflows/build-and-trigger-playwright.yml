@@ -1,0 +1,53 @@
+name: Build and Trigger Playwright E2E Tests
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Checkout the app repo
+      - name: Checkout App Repo
+        uses: actions/checkout@v4
+        with:
+          repository: gairiks-cell/my-todo-app
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3: Install app dependencies
+      - name: Install app dependencies
+        run: npm ci
+
+      # Step 4: Run app tests
+      - name: Run app tests
+        run: npm test
+
+      # Step 5: Trigger Playwright E2E tests on Playwright repo
+      - name: Trigger Playwright E2E tests
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }} # Personal access token (PAT) from the app repo
+          repository: gairiks-cell/playwright-assessment # Your Playwright repo
+          event-type: run-playwright-tests # Event type to trigger Playwright tests
+
+  trigger-e2e-tests:
+    runs-on: ubuntu-latest
+    needs: build # This ensures that the "trigger-e2e-tests" job runs only after the "build" job finishes successfully
+
+    steps:
+      # Step 1: Dispatch the event to Playwright repo
+      - name: Dispatch to Playwright repo to run tests
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }} # Same PAT used for the Playwright repo (add to the Playwright repo too)
+          repository: gairiks-cell/playwright-assessment # Playwright repo
+          event-type: trigger-playwright-tests # Event type to trigger the E2E tests
+

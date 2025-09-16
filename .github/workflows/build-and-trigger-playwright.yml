@@ -1,4 +1,4 @@
-name: Build & Execute Playwright Test Cases
+name: Build & Trigger Playwright Test Case Runner
 
 on:
   push:
